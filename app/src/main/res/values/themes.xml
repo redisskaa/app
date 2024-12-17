@@ -1,0 +1,22 @@
+<resources>
+
+    <style name="MyTheme1" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#377A37</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <style name="MyTheme2" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#377A37</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <style name="MyTheme3" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#377A37</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <style name="MyActionBar">
+        <item name="colorPrimary">#D90E0E</item>
+    </style>
+
+</resources>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NewsApp</string>
+    <string name="please_enter_query">Please enter query</string>
+    <string name="start_string">START</string>
+</resources>
