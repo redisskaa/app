@@ -2,4 +2,8 @@
     <string name="app_name">NewsApp</string>
     <string name="please_enter_query">Please enter query</string>
     <string name="start_string">START</string>
+    <string name="test">Открытие нового Activity через Intent в Android
+Чтобы открыть новое Activity в Android с помощью Intent, выполните следующие шаги:
+Создайте новое Activity:</string>
+    <string name="apiKey">209032ad559b43f0bad9cdf9c0937aa4</string>
 </resources>

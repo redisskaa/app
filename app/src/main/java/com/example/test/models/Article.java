@@ -14,6 +14,12 @@ public class Article {
     private String publishedAt;
     private String content;
 
+    public Article(String title, String description, String urlToImage) {
+        this.title = title;
+        this.description = description;
+        this.urlToImage = urlToImage;
+    }
+
     public Source getSource() {
         return source;
     }

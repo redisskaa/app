@@ -22,9 +22,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NewsApiClient {
-    private String mApiKey;
+    private final String mApiKey;
     private Map<String, String> query;
-    private APIService mAPIService;
+    private final APIService mAPIService;
 
     public NewsApiClient(String apiKey){
         mApiKey = apiKey;
