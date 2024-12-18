@@ -5,7 +5,15 @@ package com.example.test.models.request;
  */
 
 public class EverythingRequest{
-    private String q, sources, domains, from, to, language, sortBy, pageSize, page;
+    private final String q;
+    private final String sources;
+    private final String domains;
+    private final String from;
+    private final String to;
+    private final String language;
+    private final String sortBy;
+    private final String pageSize;
+    private final String page;
 
     private EverythingRequest(Builder builder){
         this.q = builder.q;

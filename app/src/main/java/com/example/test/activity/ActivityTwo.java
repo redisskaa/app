@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +38,6 @@ public class ActivityTwo extends AppCompatActivity {
             newsApiClient.getEverything(
                     new EverythingRequest.Builder()
                             .q(query)
-                            .page(1)
                             .language("ru")
                             .build(),
                     new NewsApiClient.ArticlesResponseCallback() {
@@ -49,9 +47,7 @@ public class ActivityTwo extends AppCompatActivity {
                             ListView listView = findViewById(R.id.list_item1);
                             List<Article> itemList = new ArrayList<>();
 
-                            if (response.getTotalResults() > itemList.size()){
-                                for (int i = 1; i < response.getArticles().size(); i++) {
-                                    Log.d("MYTAG", "onSuccess: " + response.getArticles().size());
+                                for (int i = 0; i < 100; i++) {
                                     Log.d("MYTAG", "onSuccess: " + response.getTotalResults());
                                     itemList.add(new Article(
                                             response.getArticles().get(i).getTitle(),
@@ -61,7 +57,7 @@ public class ActivityTwo extends AppCompatActivity {
                                 }
                                 listView.setVisibility(View.VISIBLE);
                                 pBar.setVisibility(View.GONE);
-                            }
+
 
                             CustomAdapter adapter = new CustomAdapter(ActivityTwo.this, itemList);
                             listView.setAdapter(adapter);
