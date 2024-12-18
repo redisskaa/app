@@ -1,5 +1,7 @@
 package com.example.test;
 
+import androidx.annotation.NonNull;
+
 import com.example.test.models.request.EverythingRequest;
 import com.example.test.models.request.SourcesRequest;
 import com.example.test.models.request.TopHeadlinesRequest;
@@ -121,11 +123,12 @@ public class NewsApiClient {
         mAPIService.getTopHeadlines(query)
                 .enqueue(new Callback<>() {
                     @Override
-                    public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
+                    public void onResponse(@NonNull Call<ArticleResponse> call, @NonNull Response<ArticleResponse> response) {
                         if (response.code() == HttpURLConnection.HTTP_OK) {
                             callback.onSuccess(response.body());
                         } else {
                             try {
+                                assert response.errorBody() != null;
                                 callback.onFailure(errMsg(response.errorBody().string()));
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -159,11 +162,12 @@ public class NewsApiClient {
         mAPIService.getEverything(query)
                 .enqueue(new Callback<>() {
                     @Override
-                    public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
+                    public void onResponse(@NonNull Call<ArticleResponse> call, @NonNull Response<ArticleResponse> response) {
                         if (response.code() == HttpURLConnection.HTTP_OK) {
                             callback.onSuccess(response.body());
                         } else {
                             try {
+                                assert response.errorBody() != null;
                                 callback.onFailure(errMsg(response.errorBody().string()));
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -172,7 +176,7 @@ public class NewsApiClient {
                     }
 
                     @Override
-                    public void onFailure(Call<ArticleResponse> call, Throwable throwable) {
+                    public void onFailure(@NonNull Call<ArticleResponse> call, @NonNull Throwable throwable) {
                         callback.onFailure(throwable);
                     }
                 });

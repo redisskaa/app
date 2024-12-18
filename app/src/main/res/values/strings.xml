@@ -6,4 +6,5 @@
 Чтобы открыть новое Activity в Android с помощью Intent, выполните следующие шаги:
 Создайте новое Activity:</string>
     <string name="apiKey">209032ad559b43f0bad9cdf9c0937aa4</string>
+    <string name="loading">Загрузка...</string>
 </resources>

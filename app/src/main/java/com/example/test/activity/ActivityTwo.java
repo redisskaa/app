@@ -3,7 +3,9 @@ package com.example.test.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -37,26 +39,32 @@ public class ActivityTwo extends AppCompatActivity {
             newsApiClient.getEverything(
                     new EverythingRequest.Builder()
                             .q(query)
+                            .page(1)
                             .language("ru")
                             .build(),
                     new NewsApiClient.ArticlesResponseCallback() {
                         @Override
                         public void onSuccess(ArticleResponse response) {
+                            ProgressBar pBar = findViewById(R.id.progressBar);
                             ListView listView = findViewById(R.id.list_item1);
                             List<Article> itemList = new ArrayList<>();
 
-                            for (int i = 0; i < 30; i++) {
-                                itemList.add(new Article(
-                                        response.getArticles().get(i).getTitle(),
-                                        response.getArticles().get(i).getDescription(),
-                                        response.getArticles().get(i).getUrlToImage())
-                                );
-                                Log.d("MYTAG", String.valueOf(itemList.size()));
+                            if (response.getTotalResults() > itemList.size()){
+                                for (int i = 1; i < response.getArticles().size(); i++) {
+                                    Log.d("MYTAG", "onSuccess: " + response.getArticles().size());
+                                    Log.d("MYTAG", "onSuccess: " + response.getTotalResults());
+                                    itemList.add(new Article(
+                                            response.getArticles().get(i).getTitle(),
+                                            response.getArticles().get(i).getDescription(),
+                                            response.getArticles().get(i).getUrlToImage())
+                                    );
+                                }
+                                listView.setVisibility(View.VISIBLE);
+                                pBar.setVisibility(View.GONE);
                             }
 
                             CustomAdapter adapter = new CustomAdapter(ActivityTwo.this, itemList);
                             listView.setAdapter(adapter);
-                            Log.d("MYTAG", response.getArticles().get(0).getTitle());
                         }
 
                         @Override

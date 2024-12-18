@@ -6,8 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".activity.ActivityTwo">
 
+    <include layout="@layout/custom_progress_bar"/>
+
     <ListView
         android:id="@+id/list_item1"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="1dp"
