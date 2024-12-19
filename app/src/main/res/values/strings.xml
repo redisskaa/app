@@ -1,8 +1,21 @@
 <resources>
-    <string name="app_name">NewsApp</string>
+    <string name="app_name" translatable="false">NewsApp</string>
     <string name="please_enter_query">Please enter query</string>
     <string name="start_string">START</string>
-    <string name="apiKey">209032ad559b43f0bad9cdf9c0937aa4</string>
-    <string name="todo">TODO</string>
-    <string name="no_data">Данных нет</string>
+    <string name="apiKey" translatable="false">209032ad559b43f0bad9cdf9c0937aa4</string>
+    <string name="todo" translatable="false">TODO</string>
+    <string name="no_1data" translatable="false">nodata</string>
+    <string-array name="errors">
+        <item>Ваш ключ API отключен</item>
+        <item>Для вашего ключа API больше не доступны запросы</item>
+        <item>Ваш ключ API введен неправильно</item>
+        <item>В запросе отсутствует ваш ключ API</item>
+        <item>Вы включили в свой запрос параметр, который в данный момент не поддерживается</item>
+        <item>В запросе отсутствуют обязательные параметры, и он не может быть выполнен</item>
+        <item>Ваша скорость ограничена. Подождите некоторое время, прежде чем повторить запрос</item>
+        <item>Вы запросили слишком много источников в одном запросе. Попробуйте разделить запрос на 2 меньших запроса.</item>
+        <item>Вы запросили источник, которого не существует</item>
+        <item>Повторите попытку запроса в ближайшее время.</item>
+    </string-array>
+
 </resources>

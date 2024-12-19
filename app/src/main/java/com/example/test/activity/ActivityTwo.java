@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,62 +23,131 @@ import com.example.test.models.response.ArticleResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ActivityTwo extends AppCompatActivity {
+    String query;
+    String apiKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_two);
-
-        Intent intent = getIntent();
-        String query = intent.getStringExtra("query");
-
-            NewsApiClient newsApiClient = new NewsApiClient(getResources().getString(R.string.apiKey));
-            newsApiClient.getEverything(
-                    new EverythingRequest.Builder()
-                            .q(query)
-                            .language("ru")
-                            .build(),
-                    new NewsApiClient.ArticlesResponseCallback() {
-                        @Override
-                        public void onSuccess(ArticleResponse response) {
-                            ProgressBar pBar = findViewById(R.id.progressBar);
-                            ListView listView = findViewById(R.id.list_item1);
-                            List<Article> itemList = new ArrayList<>();
-
-                                for (int i = 0; i < 100; i++) {
-                                    Log.d("MYTAG", "onSuccess: " + response.getTotalResults());
-                                    itemList.add(new Article(
-                                            response.getArticles().get(i).getTitle(),
-                                            response.getArticles().get(i).getDescription(),
-                                            response.getArticles().get(i).getUrlToImage())
-                                    );
-                                }
-                                listView.setVisibility(View.VISIBLE);
-                                pBar.setVisibility(View.GONE);
-
-
-                            CustomAdapter adapter = new CustomAdapter(ActivityTwo.this, itemList);
-                            listView.setAdapter(adapter);
-                        }
-
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            System.out.println(throwable.getMessage());
-                        }
-                    }
-            );
+        EverthingRequest();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-
             return insets;
         });
+    }
 
+    public void EverthingRequest(){
 
+        Intent intent = getIntent();
+        query = intent.getStringExtra("query");
+        apiKey = intent.getStringExtra("apikey");
 
+        NewsApiClient newsApiClient = new NewsApiClient(apiKey);
+        EverythingRequest builder =  new EverythingRequest.Builder()
+                .q(query)
+                .language("ru")
+                .page(1)
+                .pageSize(100)
+                .build();
+
+        NewsApiClient.ArticlesResponseCallback callback = new NewsApiClient.ArticlesResponseCallback() {
+            @Override
+            public void onSuccess(ArticleResponse res) {
+                ProgressBar pBar = findViewById(R.id.progressBar);
+                ListView listView = findViewById(R.id.list_item1);
+                List<Article> itemList = new ArrayList<>();
+                int pageSize = Integer.parseInt(builder.getPageSize());
+                Log.d("MYTAG", "pageSize: " + pageSize);
+                setTitle("Найдено новостей: " + res.getTotalResults());
+                String results = String.valueOf(res.getTotalResults());
+
+                if (results.equals("0")){
+                    Toast.makeText(ActivityTwo.this, "Новостей нет, измените запрос", Toast.LENGTH_LONG).show();
+                    finish();
+                }else {
+                    if (res.getStatus().equals("ok")){
+                        try {
+                            for (int i = 0; i < pageSize; i++) {
+                                itemList.add(new Article(
+                                        res.getArticles().get(i).getTitle(),
+                                        res.getArticles().get(i).getDescription(),
+                                        res.getArticles().get(i).getUrlToImage())
+                                );
+                                Log.d("MYTAG", "for: " + itemList.size());
+                            }
+                        }catch (IndexOutOfBoundsException e){
+                            Log.e("MYTAG", "IndexOutOfBoundsException: " + e.getMessage());
+                        }
+
+                        listView.setVisibility(View.VISIBLE);
+                        pBar.setVisibility(View.GONE);
+                        CustomAdapter adapter = new CustomAdapter(ActivityTwo.this, itemList);
+                        listView.setAdapter(adapter);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                String[] errors = getResources().getStringArray(R.array.errors);
+
+                switch (Objects.requireNonNull(throwable.getMessage())) {
+                    case "apiKeyDisabled":
+                        Toast.makeText(ActivityTwo.this,
+                                errors[0], Toast.LENGTH_LONG).show();
+                        break;
+                    case "apiKeyExhausted":
+                        Toast.makeText(ActivityTwo.this,
+                                errors[1], Toast.LENGTH_LONG).show();
+                        break;
+                    case "apiKeyInvalid":
+                        Toast.makeText(ActivityTwo.this,
+                                errors[2], Toast.LENGTH_LONG).show();
+                        break;
+                    case "apiKeyMissing":
+                        Toast.makeText(ActivityTwo.this,
+                                errors[3], Toast.LENGTH_LONG).show();
+                        break;
+                    case "parameterInvalid":
+                        Toast.makeText(ActivityTwo.this,
+                                errors[4], Toast.LENGTH_LONG).show();
+                        break;
+                    case "parametersMissing":
+                        Toast.makeText(ActivityTwo.this,
+                                errors[5], Toast.LENGTH_LONG).show();
+                        break;
+                    case "rateLimited":
+                        Toast.makeText(ActivityTwo.this,
+                                errors[6], Toast.LENGTH_LONG).show();
+                        break;
+                    case "sourcesTooMany":
+                        Toast.makeText(ActivityTwo.this,
+                                errors[7], Toast.LENGTH_LONG).show();
+                        break;
+                    case "sourceDoesNotExist":
+                        Toast.makeText(ActivityTwo.this,
+                                errors[8], Toast.LENGTH_LONG).show();
+                        break;
+                    case "unexpectedError":
+                        Toast.makeText(ActivityTwo.this,
+                                errors[9], Toast.LENGTH_LONG).show();
+                        break;
+
+                    default: Toast.makeText(ActivityTwo.this, "Внезапная ошибка, попробуйте позже", Toast.LENGTH_LONG).show();
+                }
+
+                finish();
+            }
+        };
+
+        newsApiClient.getEverything(builder,callback);
     }
 }

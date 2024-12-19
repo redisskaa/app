@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.test.R;
+import com.example.test.network.NetworkCheck;
 
 public class MainActivity extends AppCompatActivity {
     Button button;
@@ -39,13 +40,18 @@ public class MainActivity extends AppCompatActivity {
     public void clickButton(View view) {
 
         String inputText = editText.getText().toString().trim();
-        if (inputText.isEmpty()) {
-            Toast.makeText(this, "Поле не должно быть пустым", Toast.LENGTH_SHORT).show();
-        } else {
-            Intent intent = new Intent(this, ActivityTwo.class);
-            intent.putExtra("query", editText.getText().toString());
-            startActivity(intent);
-        }
 
+        if(NetworkCheck.isNetworkConnected(this)){
+            if (inputText.isEmpty()) {
+                Toast.makeText(this, "Поле не должно быть пустым", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(this, ActivityTwo.class);
+                intent.putExtra("query", editText.getText().toString());
+                intent.putExtra("apikey", getResources().getString(R.string.apiKey));
+                startActivity(intent);
+            }
+        }else {
+            Toast.makeText(this, "Похоже у вас проблемы с интернетом", Toast.LENGTH_SHORT).show();
+        }
     }
 }

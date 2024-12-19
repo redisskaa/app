@@ -1,7 +1,7 @@
 package com.example.test;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
-
 import com.example.test.models.request.EverythingRequest;
 import com.example.test.models.request.SourcesRequest;
 import com.example.test.models.request.TopHeadlinesRequest;
@@ -51,9 +51,9 @@ public class NewsApiClient {
         Throwable throwable = null;
         try {
             JSONObject obj = new JSONObject(str);
-            throwable = new Throwable(obj.getString("message"));
+            throwable = new Throwable(obj.getString("code"));
         } catch (JSONException e) {
-            e.printStackTrace();
+            e.getStackTrace();
         }
 
         if (throwable == null){
@@ -70,8 +70,6 @@ public class NewsApiClient {
         return query;
     }
 
-
-    //Get Sources
     public void getSources(SourcesRequest sourcesRequest, final SourcesCallback callback){
         query = createQuery();
         query.put("category", sourcesRequest.getCategory());
@@ -84,11 +82,12 @@ public class NewsApiClient {
         mAPIService.getSources(query)
                 .enqueue(new Callback<>() {
                     @Override
-                    public void onResponse(Call<SourcesResponse> call, Response<SourcesResponse> response) {
+                    public void onResponse(@NonNull Call<SourcesResponse> call, @NonNull Response<SourcesResponse> response) {
                         if (response.code() == HttpURLConnection.HTTP_OK) {
                             callback.onSuccess(response.body());
                         } else {
                             try {
+                                assert response.errorBody() != null;
                                 callback.onFailure(errMsg(response.errorBody().string()));
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -97,13 +96,11 @@ public class NewsApiClient {
                     }
 
                     @Override
-                    public void onFailure(Call<SourcesResponse> call, Throwable throwable) {
+                    public void onFailure(@NonNull Call<SourcesResponse> call, @NonNull Throwable throwable) {
                         callback.onFailure(throwable);
                     }
                 });
     }
-
-
     public void getTopHeadlines(TopHeadlinesRequest topHeadlinesRequest, final ArticlesResponseCallback callback){
 
 
@@ -137,13 +134,11 @@ public class NewsApiClient {
                     }
 
                     @Override
-                    public void onFailure(Call<ArticleResponse> call, Throwable throwable) {
+                    public void onFailure(@NonNull Call<ArticleResponse> call, @NonNull Throwable throwable) {
                         callback.onFailure(throwable);
                     }
                 });
     }
-
-
     public void getEverything(EverythingRequest everythingRequest, final ArticlesResponseCallback callback){
         query = createQuery();
         query.put("q", everythingRequest.getQ());
@@ -159,18 +154,20 @@ public class NewsApiClient {
         query.values().removeAll(Collections.singleton(null));
         query.values().removeAll(Collections.singleton("null"));
 
-        mAPIService.getEverything(query)
-                .enqueue(new Callback<>() {
+        mAPIService.getEverything(query).enqueue(new Callback<>() {
                     @Override
                     public void onResponse(@NonNull Call<ArticleResponse> call, @NonNull Response<ArticleResponse> response) {
                         if (response.code() == HttpURLConnection.HTTP_OK) {
                             callback.onSuccess(response.body());
+                            Log.e("MYTAG", "HttpURLConnection: " + response.code());
                         } else {
+                            Log.e("MYTAG", "HttpURLConnection: " + response.code());
                             try {
                                 assert response.errorBody() != null;
                                 callback.onFailure(errMsg(response.errorBody().string()));
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                System.out.println(e.getStackTrace().length);
+
                             }
                         }
                     }

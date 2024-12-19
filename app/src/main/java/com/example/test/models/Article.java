@@ -20,6 +20,8 @@ public class Article {
         this.urlToImage = urlToImage;
     }
 
+    public Article() {}
+
     public Source getSource() {
         return source;
     }
