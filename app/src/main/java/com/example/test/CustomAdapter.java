@@ -39,12 +39,12 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         HolderView holderView;
 
         if(convertView == null){
+
             convertView = LayoutInflater.from(context).inflate(R.layout.custom_layout_with_cardview, parent,false);
-            //LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            //convertView = inflater.inflate(R.layout.custom_list, parent, false);
             holderView = new HolderView(convertView);
             convertView.setTag(holderView);
 
@@ -53,7 +53,6 @@ public class CustomAdapter extends BaseAdapter {
         }
 
         Article article = userList.get(position);
-        holderView.image.setImageResource(R.drawable.no_image);
         holderView.title.setText(article.getTitle());
         holderView.description.setText(article.getDescription());
         Glide.with(context).load(article.getUrlToImage()).into(holderView.image);

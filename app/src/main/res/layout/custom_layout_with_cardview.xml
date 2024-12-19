@@ -2,7 +2,7 @@
 <com.google.android.material.card.MaterialCardView
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10dp"
     app:cardElevation="6dp"
@@ -13,12 +13,13 @@
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/item_title"
-            android:padding="5dp"
+            android:layout_margin="10dp"
             android:textAlignment="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,13 +29,14 @@
 
         <ImageView
             android:id="@+id/image_item"
+            android:src="@drawable/no_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/todo" />
 
         <TextView
             android:id="@+id/item_description"
-            android:padding="5dp"
+            android:layout_margin="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no_1data"

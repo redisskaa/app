@@ -4,17 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.test.CustomAdapter;
+import com.example.test.FullActivity;
 import com.example.test.NewsApiClient;
 import com.example.test.R;
 import com.example.test.models.Article;
@@ -28,6 +31,7 @@ import java.util.Objects;
 public class ActivityTwo extends AppCompatActivity {
     String query;
     String apiKey;
+    CardView cardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,6 @@ public class ActivityTwo extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_two);
         EverthingRequest();
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -43,7 +46,7 @@ public class ActivityTwo extends AppCompatActivity {
         });
     }
 
-    public void EverthingRequest(){
+    public void EverthingRequest (){
 
         Intent intent = getIntent();
         query = intent.getStringExtra("query");
@@ -53,8 +56,7 @@ public class ActivityTwo extends AppCompatActivity {
         EverythingRequest builder =  new EverythingRequest.Builder()
                 .q(query)
                 .language("ru")
-                .page(1)
-                .pageSize(100)
+                .pageSize(15)
                 .build();
 
         NewsApiClient.ArticlesResponseCallback callback = new NewsApiClient.ArticlesResponseCallback() {
@@ -62,6 +64,7 @@ public class ActivityTwo extends AppCompatActivity {
             public void onSuccess(ArticleResponse res) {
                 ProgressBar pBar = findViewById(R.id.progressBar);
                 ListView listView = findViewById(R.id.list_item1);
+                cardView = findViewById(R.id.cardFull);
                 List<Article> itemList = new ArrayList<>();
                 int pageSize = Integer.parseInt(builder.getPageSize());
                 Log.d("MYTAG", "pageSize: " + pageSize);
@@ -90,6 +93,16 @@ public class ActivityTwo extends AppCompatActivity {
                         pBar.setVisibility(View.GONE);
                         CustomAdapter adapter = new CustomAdapter(ActivityTwo.this, itemList);
                         listView.setAdapter(adapter);
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intentFull = new Intent(ActivityTwo.this, FullActivity.class);
+                                intentFull.putExtra("content", new Article().getContent());
+                                intentFull.putExtra("imageUrl", new Article().getUrlToImage());
+                                startActivity(intentFull);
+                                Toast.makeText(getApplicationContext(), new Article().getContent(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
                     }
                 }
@@ -141,13 +154,13 @@ public class ActivityTwo extends AppCompatActivity {
                                 errors[9], Toast.LENGTH_LONG).show();
                         break;
 
-                    default: Toast.makeText(ActivityTwo.this, "Внезапная ошибка, попробуйте позже", Toast.LENGTH_LONG).show();
+                    default: Toast.makeText(ActivityTwo.this, "Разработчик не учел эту ошибку ((", Toast.LENGTH_LONG).show();
                 }
 
                 finish();
             }
         };
-
         newsApiClient.getEverything(builder,callback);
+
     }
 }

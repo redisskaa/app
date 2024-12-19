@@ -20,7 +20,14 @@ public class Article {
         this.urlToImage = urlToImage;
     }
 
-    public Article() {}
+    public Article(String content, String urlToImage) {
+        this.content = content;
+        this.urlToImage = urlToImage;
+    }
+
+    public Article() {
+
+    }
 
     public Source getSource() {
         return source;
