@@ -17,7 +17,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.test.CustomAdapter;
-import com.example.test.FullActivity;
 import com.example.test.NewsApiClient;
 import com.example.test.R;
 import com.example.test.models.Article;
@@ -25,6 +24,7 @@ import com.example.test.models.request.EverythingRequest;
 import com.example.test.models.response.ArticleResponse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,6 +57,7 @@ public class ActivityTwo extends AppCompatActivity {
                 .q(query)
                 .language("ru")
                 .pageSize(15)
+                .page(1)
                 .build();
 
         NewsApiClient.ArticlesResponseCallback callback = new NewsApiClient.ArticlesResponseCallback() {
@@ -64,15 +65,20 @@ public class ActivityTwo extends AppCompatActivity {
             public void onSuccess(ArticleResponse res) {
                 ProgressBar pBar = findViewById(R.id.progressBar);
                 ListView listView = findViewById(R.id.list_item1);
-                cardView = findViewById(R.id.cardFull);
                 List<Article> itemList = new ArrayList<>();
                 int pageSize = Integer.parseInt(builder.getPageSize());
                 Log.d("MYTAG", "pageSize: " + pageSize);
                 setTitle("Найдено новостей: " + res.getTotalResults());
                 String results = String.valueOf(res.getTotalResults());
 
+                if (res.getTotalResults() <= 20){
+                    pageSize = res.getTotalResults();
+                    Log.e("MYTAG", "сработало: " + pageSize);
+                }
+
                 if (results.equals("0")){
-                    Toast.makeText(ActivityTwo.this, "Новостей нет, измените запрос", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ActivityTwo.this, "Новостей нет, измените запрос",
+                            Toast.LENGTH_LONG).show();
                     finish();
                 }else {
                     if (res.getStatus().equals("ok")){
@@ -80,10 +86,10 @@ public class ActivityTwo extends AppCompatActivity {
                             for (int i = 0; i < pageSize; i++) {
                                 itemList.add(new Article(
                                         res.getArticles().get(i).getTitle(),
-                                        res.getArticles().get(i).getDescription(),
+                                        "",
                                         res.getArticles().get(i).getUrlToImage())
                                 );
-                                Log.d("MYTAG", "for: " + itemList.size());
+                                Log.d("MYTAG", "for: " + res.getArticles().get(i).getContent());
                             }
                         }catch (IndexOutOfBoundsException e){
                             Log.e("MYTAG", "IndexOutOfBoundsException: " + e.getMessage());
@@ -93,14 +99,14 @@ public class ActivityTwo extends AppCompatActivity {
                         pBar.setVisibility(View.GONE);
                         CustomAdapter adapter = new CustomAdapter(ActivityTwo.this, itemList);
                         listView.setAdapter(adapter);
+                        Log.d("MYTAG", "itemList: " + Arrays.toString(itemList.toArray()));
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 Intent intentFull = new Intent(ActivityTwo.this, FullActivity.class);
-                                intentFull.putExtra("content", new Article().getContent());
-                                intentFull.putExtra("imageUrl", new Article().getUrlToImage());
+                                intentFull.putExtra("content", res.getArticles().get(position).getDescription().trim());
+                                intentFull.putExtra("imageUrl", res.getArticles().get(position).getUrlToImage());
                                 startActivity(intentFull);
-                                Toast.makeText(getApplicationContext(), new Article().getContent(), Toast.LENGTH_SHORT).show();
                             }
                         });
 

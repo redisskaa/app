@@ -1,7 +1,8 @@
-package com.example.test;
+package com.example.test.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.test.R;
 
 public class FullActivity extends AppCompatActivity {
 
@@ -32,6 +34,7 @@ public class FullActivity extends AppCompatActivity {
         String imageUrl = intent.getStringExtra("imageUrl");
         Glide.with(this).load(imageUrl).into(imageFull);
         fullText.setText(content);
+        Log.d("MYTAG", "onCreate: " + content);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

@@ -4,39 +4,54 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:scrollbars="vertical"
     android:id="@+id/main"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FullActivity">
+    tools:context=".activity.FullActivity">
 
     <com.google.android.material.card.MaterialCardView
 
-        android:id="@+id/cardFull"
+        android:id="@+id/card_full_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="10dp"
-        app:cardElevation="6dp"
+        app:cardElevation="1dp"
         app:cardUseCompatPadding="true"
         app:cardPreventCornerOverlap="true" >
 
         <ImageView
             android:id="@+id/image_full_content"
+            android:layout_margin="10dp"
             android:src="@drawable/no_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/todo" />
 
-            <TextView
-                android:id="@+id/full_content_text"
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_1data"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+
+        android:id="@+id/card_full_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="true"
+        app:cardPreventCornerOverlap="true" >
+
+        <TextView
+            android:id="@+id/full_content_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:text="@string/no_1data"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </com.google.android.material.card.MaterialCardView>
+
+
 
 </LinearLayout>
