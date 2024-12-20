@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -31,7 +30,7 @@ import java.util.Objects;
 public class ActivityTwo extends AppCompatActivity {
     String query;
     String apiKey;
-    CardView cardView;
+    String lang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +50,12 @@ public class ActivityTwo extends AppCompatActivity {
         Intent intent = getIntent();
         query = intent.getStringExtra("query");
         apiKey = intent.getStringExtra("apikey");
+        lang = intent.getStringExtra("lang");
 
         NewsApiClient newsApiClient = new NewsApiClient(apiKey);
         EverythingRequest builder =  new EverythingRequest.Builder()
                 .q(query)
-                .language("ru")
+                .language(lang)
                 .pageSize(15)
                 .page(1)
                 .build();
@@ -104,12 +104,18 @@ public class ActivityTwo extends AppCompatActivity {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 Intent intentFull = new Intent(ActivityTwo.this, FullActivity.class);
-                                intentFull.putExtra("content", res.getArticles().get(position).getDescription().trim());
+
+                                if (lang.equals("ru")){
+                                    intentFull.putExtra("content", res.getArticles().get(position).getDescription().trim());
+                                }else {
+                                    intentFull.putExtra("content", res.getArticles().get(position).getContent().trim());
+                                }
+
                                 intentFull.putExtra("imageUrl", res.getArticles().get(position).getUrlToImage());
+                                intentFull.putExtra("url", res.getArticles().get(position).getUrl());
                                 startActivity(intentFull);
                             }
                         });
-
                     }
                 }
             }

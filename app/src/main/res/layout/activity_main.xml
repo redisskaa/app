@@ -9,6 +9,11 @@
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
+    <Spinner
+        android:id="@+id/mySpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/search_edit"
         android:textAlignment="center"

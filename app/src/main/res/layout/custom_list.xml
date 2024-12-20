@@ -16,21 +16,4 @@
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray" />
 
-    <ImageView
-        android:id="@+id/image_item"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:contentDescription="@string/app_name"
-        app:srcCompat="@drawable/no_image2" />
-
-    <TextView
-        android:id="@+id/item_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textColor="@android:color/darker_gray" />
-
 </LinearLayout>

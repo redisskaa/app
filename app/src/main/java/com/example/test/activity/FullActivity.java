@@ -17,7 +17,7 @@ import com.example.test.R;
 
 public class FullActivity extends AppCompatActivity {
 
-    TextView fullText;
+    TextView fullText, fullNewsText;
     ImageView imageFull;
 
     @Override
@@ -26,14 +26,17 @@ public class FullActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_full);
 
+        fullNewsText = findViewById(R.id.fullNewsText);
         fullText = findViewById(R.id.full_content_text);
         imageFull = findViewById(R.id.image_full_content);
 
         Intent intent = getIntent();
         String content = intent.getStringExtra("content");
         String imageUrl = intent.getStringExtra("imageUrl");
+        String url = intent.getStringExtra("url");
         Glide.with(this).load(imageUrl).into(imageFull);
         fullText.setText(content);
+        fullNewsText.setText(url);
         Log.d("MYTAG", "onCreate: " + content);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

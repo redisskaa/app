@@ -15,7 +15,7 @@
 
         android:id="@+id/card_full_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
         app:cardElevation="1dp"
         app:cardUseCompatPadding="true"
@@ -25,6 +25,33 @@
             android:id="@+id/image_full_content"
             android:layout_margin="10dp"
             android:src="@drawable/no_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/todo" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="true"
+        app:cardPreventCornerOverlap="true" >
+
+        <TextView
+            android:id="@+id/fullNewsText"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:maxLength="50"
+            android:layout_margin="10dp"
+            android:focusable="true"
+            android:autoLink="web"
+            android:linksClickable="true"
+            android:text="@string/istochnik1"
+            android:src="@drawable/no_image"
+            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/todo" />
@@ -51,7 +78,5 @@
             android:textStyle="bold" />
 
     </com.google.android.material.card.MaterialCardView>
-
-
 
 </LinearLayout>

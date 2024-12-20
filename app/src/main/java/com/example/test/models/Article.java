@@ -24,11 +24,9 @@ public class Article {
         this.content = content;
         this.urlToImage = urlToImage;
     }
-
     public Article() {
 
     }
-
     public Source getSource() {
         return source;
     }
