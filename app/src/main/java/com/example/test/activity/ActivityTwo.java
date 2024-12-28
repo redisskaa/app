@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -23,7 +22,6 @@ import com.example.test.models.request.EverythingRequest;
 import com.example.test.models.response.ArticleResponse;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,6 +29,8 @@ public class ActivityTwo extends AppCompatActivity {
     String query;
     String apiKey;
     String lang;
+    String description;
+    String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +70,7 @@ public class ActivityTwo extends AppCompatActivity {
                 Log.d("MYTAG", "pageSize: " + pageSize);
                 setTitle("Найдено новостей: " + res.getTotalResults());
                 String results = String.valueOf(res.getTotalResults());
+                CustomAdapter adapter = new CustomAdapter(ActivityTwo.this, itemList);
 
                 if (res.getTotalResults() <= 20){
                     pageSize = res.getTotalResults();
@@ -81,40 +82,53 @@ public class ActivityTwo extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                     finish();
                 }else {
+
                     if (res.getStatus().equals("ok")){
+
                         try {
+
                             for (int i = 0; i < pageSize; i++) {
-                                itemList.add(new Article(
-                                        res.getArticles().get(i).getTitle(),
-                                        "",
-                                        res.getArticles().get(i).getUrlToImage())
+                                itemList.add(
+                                        new Article(res.getArticles().get(i).getTitle(), res.getArticles().get(i).getUrlToImage())
                                 );
-                                Log.d("MYTAG", "for: " + res.getArticles().get(i).getContent());
                             }
+
+                            for (int i = 0; i < itemList.size(); i++) {
+                                title = res.getArticles().get(i).getTitle();
+                                description = res.getArticles().get(i).getDescription();
+
+                                if (title.equals("[Removed]")){
+                                    itemList.remove(itemList.remove(i));
+                                    adapter.notifyDataSetChanged();
+                                }
+
+                                if (description.equals("[Removed]")){
+                                    itemList.remove(itemList.remove(i));
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+
                         }catch (IndexOutOfBoundsException e){
                             Log.e("MYTAG", "IndexOutOfBoundsException: " + e.getMessage());
                         }
 
                         listView.setVisibility(View.VISIBLE);
                         pBar.setVisibility(View.GONE);
-                        CustomAdapter adapter = new CustomAdapter(ActivityTwo.this, itemList);
                         listView.setAdapter(adapter);
-                        Log.d("MYTAG", "itemList: " + Arrays.toString(itemList.toArray()));
-                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Intent intentFull = new Intent(ActivityTwo.this, FullActivity.class);
+                        //Log.d("MYTAG", "itemList: " + Arrays.toString(itemList.toArray()));
+                        listView.setOnItemClickListener((parent, view, position, id) -> {
 
-                                if (lang.equals("ru")){
-                                    intentFull.putExtra("content", res.getArticles().get(position).getDescription().trim());
-                                }else {
-                                    intentFull.putExtra("content", res.getArticles().get(position).getContent().trim());
-                                }
-
-                                intentFull.putExtra("imageUrl", res.getArticles().get(position).getUrlToImage());
-                                intentFull.putExtra("url", res.getArticles().get(position).getUrl());
-                                startActivity(intentFull);
+                            Intent intentFull = new Intent(ActivityTwo.this, FullActivity.class);
+                            if (lang.equals("ru") || lang.isEmpty()){
+                                intentFull.putExtra("content", res.getArticles().get(position).getDescription().trim());
+                            }else {
+                                intentFull.putExtra("content", res.getArticles().get(position).getContent().trim());
                             }
+
+                            intentFull.putExtra("title", res.getArticles().get(position).getTitle());
+                            intentFull.putExtra("imageUrl", res.getArticles().get(position).getUrlToImage());
+                            intentFull.putExtra("url", res.getArticles().get(position).getUrl());
+                            startActivity(intentFull);
                         });
                     }
                 }
