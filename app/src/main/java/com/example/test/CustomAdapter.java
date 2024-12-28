@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.test.models.Article;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class CustomAdapter extends BaseAdapter {
         Article article = userList.get(position);
         holderView.title.setText(article.getTitle());
         holderView.description.setText(article.getDescription());
-        Glide.with(context).load(article.getUrlToImage()).into(holderView.image);
+        Picasso.get().load(article.getUrlToImage()).into(holderView.image);
 
         return convertView;
     }

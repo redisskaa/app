@@ -11,10 +11,11 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
+        style="@android:style/Widget.ProgressBar.Large.Inverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminateTint="@color/black"
         android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/load"
+        android:indeterminateTint="@color/colorPrimary"
         android:visibility="visible" />
 </LinearLayout>

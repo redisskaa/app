@@ -20,9 +20,9 @@ public class Article {
         this.urlToImage = urlToImage;
     }
 
-    public Article(String content, String urlToImage) {
-        this.content = content;
+    public Article(String title, String urlToImage) {
         this.urlToImage = urlToImage;
+        this.title = title;
     }
     public Article() {
 

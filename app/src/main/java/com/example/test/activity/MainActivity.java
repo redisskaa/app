@@ -58,14 +58,14 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), item, Toast.LENGTH_SHORT).show();
                         break;
                     default:
-                        lang = "ru";
+                        lang = "";
                         break;
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Действия, если ничего не выбрано
+                
             }
         });
 

@@ -12,8 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.bumptech.glide.Glide;
 import com.example.test.R;
+import com.squareup.picasso.Picasso;
 
 public class FullActivity extends AppCompatActivity {
 
@@ -31,10 +31,12 @@ public class FullActivity extends AppCompatActivity {
         imageFull = findViewById(R.id.image_full_content);
 
         Intent intent = getIntent();
+        String title = intent.getStringExtra("title");
         String content = intent.getStringExtra("content");
         String imageUrl = intent.getStringExtra("imageUrl");
         String url = intent.getStringExtra("url");
-        Glide.with(this).load(imageUrl).into(imageFull);
+        Picasso.get().load(imageUrl).into(imageFull);
+        setTitle(title);
         fullText.setText(content);
         fullNewsText.setText(url);
         Log.d("MYTAG", "onCreate: " + content);

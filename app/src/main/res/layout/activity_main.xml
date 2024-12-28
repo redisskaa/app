@@ -17,14 +17,15 @@
     <EditText
         android:id="@+id/search_edit"
         android:textAlignment="center"
-        android:layout_width="250dp"
+        android:maxLength="500"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autofillHints="faa"
         android:textSize="20sp"
         android:hint="@string/please_enter_query"
         android:inputType="text"
         android:layout_margin="30dp"
-        android:minHeight="48dp" />
+        android:minHeight="50dp" />
 
     <Button
         android:id="@+id/buttonStart"
